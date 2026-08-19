@@ -6,7 +6,7 @@
 
             // String to Array
             if(strpos($ip,',') !==false){
-                $ip = trim(explose(',', $ip)[0]);
+                $ip = trim(explode(',', $ip)[0]);
             }
 
             // Get user agent (browser)
@@ -32,3 +32,4 @@
             
         }
     }
+?>
