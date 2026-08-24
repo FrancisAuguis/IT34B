@@ -11,7 +11,7 @@
            }
 
            // Get user agent (browser) 
-           $user_agent = substr($SERVER['HTTP_USER_AGENT'] ?? 'UNKNOWN', 0, 255);
+           $user_agent = substr($_SERVER['HTTP_USER_AGENT'] ?? 'UNKNOWN', 0, 255);
 
            // Application Query #1
            $stmt = $pdo -> prepare("
@@ -22,14 +22,14 @@
                  activity_log_status,
                  activity_log_ip_address,
                  activity_log_user_agent
-             ) VALUES (?,?,?,?,?,?)
-        ");
-            
-
-        } catch (PDOException $e){
+              ) VALUES (?,?,?,?,?,?)
+         ");
          
-            error_log("Activity Log Error: " . $e->getMessage());
-            return false;
-            }
+          $stmt->execute([$user_id, $user_email, $action, $status, $ip, $user_agent]);
+          return true;
+      } catch (PDOException $e){
+             error_log("Activity Log Error: " . $e->getMessage());
+             return false;
+             }
     }
  ?>
