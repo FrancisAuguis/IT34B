@@ -31,8 +31,7 @@ $buttons = [
             <td>
 
                 <form method="POST">
-                    <input type="hidden" name="action" value="<?= htmlspecialchars($button) ?>"
-                    >
+                    <input type="hidden" name="action" value="<?= htmlspecialchars($button) ?>">
                     <button type="submit">Test</button>
                 </form>
 
@@ -43,26 +42,26 @@ $buttons = [
 </table>
 
 <?php
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? "test_activity";
 
-    $status = random_int(0, 1) === 1? 'Success':'Failed';
+    $status = random_int(0, 1) === 1 ? 'Success' : 'Failed';
 
-        $succes = logActivity(
-            $pdo,
-            $user_ID,
-            $user_email,
-            $action,
-            $status
-        );
+    $succes = logActivity(
+        $pdo,
+        $user_ID,
+        $user_email,
+        $action,
+        $status
+    );
 
-        if($succes) {
-            echo "<p>Activity: " . htmlspecialchars($action) . 
-            " Status: " . htmlspecialchars($status) . 
+    if ($succes) {
+        echo "<p>Activity: " . htmlspecialchars($action) .
+            " Status: " . htmlspecialchars($status) .
             " logged successfully.</p>";
-        } else {
-            echo "<p>Failed to log activity.</p>";
-        }
+    } else {
+        echo "<p>Failed to log activity.</p>";
+    }
 }
 
 ?>
