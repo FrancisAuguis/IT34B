@@ -5,34 +5,36 @@ $user_ID = $_SESSION['user_id'] ?? null;
 $user_email = $_SESSION['user_email'] ?? null;
 
 $buttons = [
-    'login',
-    'logout',
-    'create Record',
-    'Update Record',
-    'Delete Record',
-    'View Record',
-    'Upload File',
-    'Download',
-    'Serch',
-    'Generate Report',
+    'login'              => '#3498db',
+    'logout'             => '#9b59b6',
+    'create Record'      => '#2ecc71',
+    'Update Record'      => '#f39c12',
+    'Delete Record'      => '#e74c3c',
+    'View Record'        => '#1abc9c',
+    'Upload File'        => '#34495e',
+    'Download'           => '#16a085',
+    'Search'             => '#d35400',
+    'Generate Report'    => '#8e44ad',
 ];
 
 ?>
 
-<table border="1 cellpadding=" 10">
+
+
+<table border="1" cellpadding="10">
     <tr>
         <th>Action</th>
         <th>Log Activity</th>
     </tr>
 
-    <?php foreach ($buttons as $button): ?>
+    <?php foreach ($buttons as $button => $color): ?>
         <tr>
             <td><?= htmlspecialchars($button) ?></td>
             <td>
 
                 <form method="POST">
                     <input type="hidden" name="action" value="<?= htmlspecialchars($button) ?>">
-                    <button type="submit">Test</button>
+                    <button type="submit" style="background: <?= $color ?>;">Test</button>
                 </form>
 
             </td>
@@ -47,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $status = random_int(0, 1) === 1 ? 'Success' : 'Failed';
 
-    $succes = logActivity(
+    $success = logActivity(
         $pdo,
         $user_ID,
         $user_email,
@@ -55,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $status
     );
 
-    if ($succes) {
+    if ($success) {
         echo "<p>Activity: " . htmlspecialchars($action) .
             " Status: " . htmlspecialchars($status) .
             " logged successfully.</p>";
@@ -64,4 +66,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-?>
