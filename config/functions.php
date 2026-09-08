@@ -5,7 +5,7 @@ function redirect($path){
     exit;
 }
 
-<?php
+
 
 function loginUser($pdo, $login, $password)
 {
