@@ -1,68 +1,56 @@
 <?php
+
 require_once 'config/config.php';
+require_once 'config/functions.php';
 
-$user_ID = $_SESSION['user_id'] ?? null;
-$user_email = $_SESSION['user_email'] ?? null;
+if (isset($_SESSION['user_id'])) {
+    header('Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
+    exit;
+}
 
-$buttons = [
-    'login'              => '#3498db',
-    'logout'             => '#9b59b6',
-    'create Record'      => '#2ecc71',
-    'Update Record'      => '#f39c12',
-    'Delete Record'      => '#e74c3c',
-    'View Record'        => '#1abc9c',
-    'Upload File'        => '#34495e',
-    'Download'           => '#16a085',
-    'Search'             => '#d35400',
-    'Generate Report'    => '#8e44ad',
-];
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $login = trim($_POST['login'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if (loginUser($pdo, $login, $password)) {
+    echo 'Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php';
+    header('Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
+    exit;
+}
+
+    $error = 'Invalid login credentials';
+}
 
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
 
+    <form method="post">
+        <label>Username or Email</label>
+        <input type="text"
+               name="login"
+               required>
 
-<table border="1" cellpadding="10">
-    <tr>
-        <th>Action</th>
-        <th>Log Activity</th>
-    </tr>
+        <br>
+        <br>
 
-    <?php foreach ($buttons as $button => $color): ?>
-        <tr>
-            <td><?= htmlspecialchars($button) ?></td>
-            <td>
+        <label>Password</label>
+        <input type="password"
+               name="password"
+               required>
+        <br>
 
-                <form method="POST">
-                    <input type="hidden" name="action" value="<?= htmlspecialchars($button) ?>">
-                    <button type="submit" style="background: <?= $color ?>;">Test</button>
-                </form>
+        <button type="submit">Sign In</button>
+    </form>
 
-            </td>
-        </tr>
-    <?php endforeach; ?>
-
-</table>
-
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? "test_activity";
-
-    $status = random_int(0, 1) === 1 ? 'Success' : 'Failed';
-
-    $success = logActivity(
-        $pdo,
-        $user_ID,
-        $user_email,
-        $action,
-        $status
-    );
-
-    if ($success) {
-        echo "<p>Activity: " . htmlspecialchars($action) .
-            " Status: " . htmlspecialchars($status) .
-            " logged successfully.</p>";
-    } else {
-        echo "<p>Failed to log activity.</p>";
-    }
-}
-
+</body>
+</html>
