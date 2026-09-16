@@ -5,21 +5,19 @@ $user_ID = $_SESSION['user_id'] ?? null;
 $user_email = $_SESSION['user_email'] ?? null;
 
 $buttons = [
-    'login'              => '#3498db',
-    'logout'             => '#9b59b6',
-    'create Record'      => '#2ecc71',
-    'Update Record'      => '#f39c12',
-    'Delete Record'      => '#e74c3c',
-    'View Record'        => '#1abc9c',
-    'Upload File'        => '#34495e',
-    'Download'           => '#16a085',
-    'Search'             => '#d35400',
-    'Generate Report'    => '#8e44ad',
+    'login',
+    'logout',
+    'create Record',
+    'Update Record',
+    'Delete Record',
+    'View Record',
+    'Upload File',
+    'Download',
+    'Search',
+    'Generate Report'
 ];
 
 ?>
-
-
 
 <table border="1" cellpadding="10">
     <tr>
@@ -27,16 +25,19 @@ $buttons = [
         <th>Log Activity</th>
     </tr>
 
-    <?php foreach ($buttons as $button => $color): ?>
+    <?php foreach ($buttons as $button): ?>
         <tr>
             <td><?= htmlspecialchars($button) ?></td>
             <td>
-
                 <form method="POST">
-                    <input type="hidden" name="action" value="<?= htmlspecialchars($button) ?>">
-                    <button type="submit" style="background: <?= $color ?>;">Test</button>
-                </form>
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="<?= htmlspecialchars($button) ?>"
+                    >
 
+                    <button type="submit">Test</button>
+                </form>
             </td>
         </tr>
     <?php endforeach; ?>
@@ -45,7 +46,8 @@ $buttons = [
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? "test_activity";
+
+    $action = $_POST['action'] ?? 'test_activity';
 
     $status = random_int(0, 1) === 1 ? 'Success' : 'Failed';
 
@@ -65,4 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<p>Failed to log activity.</p>";
     }
 }
+?>
+
 
