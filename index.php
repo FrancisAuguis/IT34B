@@ -14,35 +14,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $login = trim($_POST['login'] ?? '');
     $password = $_POST['password'] ?? '';
 
-     $error = 'Invalid login credentials';
-
     if ($login === '' || $password === ''){
+        $error = 'Please fill in all fields';
 
-        //Log incomplete login attempt
         logActivity(
-            $pdo, 
-            null, 
-            $login, 
-            'login', 
+            $pdo,
+            null,
+            $login,
+            'login',
             'failed'
         );
-
-    
     } else{
-
         if(loginUser($pdo, $login, $password)){
-
-            //Log incomplete login attempt
             logActivity(
-                $pdo,$_SESSION['user_id'],
+                $pdo,
+                $_SESSION['user_id'],
                 $_SESSION['user_email'],
                 'login',
                 'success'
             );
 
-            echo 'Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php';
             header('Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
             exit;
+        } else {
+            $error = 'Invalid login credentials';
+
+            logActivity(
+                $pdo,
+                null,
+                $login,
+                'login',
+                'failed'
+            );
         }
     }
 }
@@ -59,6 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 <body>
 
     <form method="post">
+        <?php if ($error !== ''): ?>
+            <p style="color:red"><?php echo $error; ?></p>
+        <?php endif; ?>
+
         <label>Username or Email</label>
         <input type="text"
                name="login"
