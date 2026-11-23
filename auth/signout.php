@@ -11,10 +11,10 @@ if (isset($_SESSION['user_id'])) {
     );
 
     endUserSession($pdo);
-
-    session_unset();
-    session_destroy();
 }
 
-redirect('/index.php');
-?>
+$_SESSION = [];
+session_destroy();
+
+header('Location: ' . BASE_URL . '/index.php');
+exit;
